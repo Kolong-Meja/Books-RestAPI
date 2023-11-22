@@ -22,7 +22,7 @@ public class OpenApiConfig {
         .description("A books API that implemented with Spring Boot and Java 21.")
         .contact(new Contact()
         .name("Faisal Ramadhan")
-        .url("https://github.com/Kolong-Meja"))
+        .url("https://github.com/Kolong-Meja/Books-RestAPI/tree/public-v1"))
         .license(new License().name("GNU General Public License 3.0").url("https://www.gnu.org/licenses/gpl-3.0.en.html#license-text"))
         .version("0.0.1"));
     }
