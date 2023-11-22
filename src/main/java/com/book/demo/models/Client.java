@@ -3,6 +3,8 @@ package com.book.demo.models;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -57,20 +59,27 @@ public class Client implements UserDetails {
 
     public Client() {}
 
-    public Client(
-        String id, 
+    private Client(
         String fullname, 
         String email, 
         String password,
-        Role role, 
-        LocalDateTime createdOn
-        ) {
-        this.id = id;
-        this.fullname = fullname;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.createdOn = createdOn;
+        Role role
+    ) {
+        this.id = UUID.randomUUID().toString();
+        this.fullname = Objects.requireNonNull(fullname);
+        this.email = Objects.requireNonNull(getVerifiedEmail(email));
+        this.password = Objects.requireNonNull(password);
+        this.role = Objects.requireNonNull(role);
+        this.createdOn = LocalDateTime.now();
+    }
+
+    public static Client getInstance(
+        String fullname, 
+        String email, 
+        String password,
+        Role role
+    ) {
+        return new Client(fullname, email, password, role);
     }
 
     public void setCurrentId(String newValue) {
@@ -124,6 +133,14 @@ public class Client implements UserDetails {
     @Override
     public String toString() {
         return String.format("Cleint{id=%s, fullname=%s, email=%s, password=%s, role=%s, createdOn=%s}", id, fullname, email, password, role, createdOn);
+    }
+
+    private static final String getVerifiedEmail(String email) {
+        if (!email.contains("@") && !email.contains(".com")) {
+            throw new IllegalArgumentException(String.format("'%s' not a verified email.", email));
+        } else {
+            return email;
+        }
     }
 
     @Override

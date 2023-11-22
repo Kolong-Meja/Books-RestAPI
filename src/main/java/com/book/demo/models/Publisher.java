@@ -2,6 +2,7 @@ package com.book.demo.models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -60,15 +61,40 @@ public class Publisher {
 
     public Publisher() {}
 
-    public Publisher(String id, String name, String email, String bio, int foundYear, String address, String phoneNumber, LocalDateTime createdOn) {
-        this.id = id;
+    private Publisher( 
+        String name, 
+        String email, 
+        String bio, 
+        int foundYear, 
+        String address, 
+        String phoneNumber
+    ) {
+        this.id = UUID.randomUUID().toString();
         this.name = Objects.requireNonNull(name);
         this.email = Objects.requireNonNull(getVerifiedEmail(email));
         this.bio = Objects.requireNonNull(bio);
         this.foundYear = Objects.requireNonNull(foundYear);
         this.address = Objects.requireNonNull(address);
         this.phoneNumber = Objects.requireNonNull(getVerifiedPhoneNumber(phoneNumber));
-        this.createdOn = createdOn;
+        this.createdOn = LocalDateTime.now();
+    }
+
+    public static Publisher getInstance(
+        String name, 
+        String email, 
+        String bio, 
+        int foundYear, 
+        String address, 
+        String phoneNumber
+    ) {
+        return new Publisher(
+            name, 
+            email, 
+            bio, 
+            foundYear, 
+            address, 
+            phoneNumber
+        );
     }
 
     public void setCurrentId(String newId) {

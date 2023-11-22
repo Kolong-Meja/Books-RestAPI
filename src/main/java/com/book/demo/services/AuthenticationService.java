@@ -1,8 +1,5 @@
 package com.book.demo.services;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,18 +35,17 @@ public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
     public AuthenticationResponse signUp(ClientDTO clientDTO) {
-        Client client = new Client(
-            UUID.randomUUID().toString(), 
+        Client client = Client.getInstance( 
             clientDTO.fullname(), 
             clientDTO.email(), 
             passwordEncoder.encode(clientDTO.password()), 
-            Role.USER, 
-            LocalDateTime.now()
+            Role.USER
         );
         clientRepository.save(client);
 
         String token = jwtService.generateToken(client);
-        return AuthenticationResponse.builder().token(token).build();
+        
+        return new AuthenticationResponse(token);
     }
 
     public AuthenticationResponse signIn(ClientLoginDTO clientLoginDTO) {
@@ -61,6 +57,7 @@ public class AuthenticationService {
         if (client == null) throw new UsernameNotFoundException(String.format("Client with email %s not found.", clientLoginDTO.email()));
 
         String token = jwtService.generateToken(client);
-        return AuthenticationResponse.builder().token(token).build();
+
+        return new AuthenticationResponse(token);
     }
 }

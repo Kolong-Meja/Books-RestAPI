@@ -2,6 +2,7 @@ package com.book.demo.models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -73,8 +74,7 @@ public class Book {
 
     public Book() {}
 
-    public Book(
-        String id, 
+    private Book( 
         long isbn,
         String title,
         String synopsis,
@@ -82,10 +82,9 @@ public class Book {
         String publisherId, 
         int publishYear, 
         int totalPage, 
-        String category, 
-        LocalDateTime createdOn
-        ) {
-        this.id = id;
+        String category
+    ) {
+        this.id = UUID.randomUUID().toString();
         this.isbn = Objects.requireNonNull(isbn);
         this.title = Objects.requireNonNull(title);
         this.synopsis = Objects.requireNonNull(synopsis);
@@ -94,7 +93,29 @@ public class Book {
         this.publishYear = Objects.requireNonNull(publishYear);
         this.totalPage = Objects.requireNonNull(totalPage);
         this.category = Objects.requireNonNull(category);
-        this.createdOn = createdOn;
+        this.createdOn = LocalDateTime.now();
+    }
+
+    public static Book getInstance(
+        long isbn,
+        String title,
+        String synopsis,
+        String authorId,
+        String publisherId, 
+        int publishYear, 
+        int totalPage, 
+        String category
+    ) {
+        return new Book(
+            isbn, 
+            title, 
+            synopsis, 
+            authorId, 
+            publisherId, 
+            publishYear, 
+            totalPage, 
+            category
+        );
     }
 
     public void changeId(String newValue) {

@@ -1,8 +1,6 @@
 package com.book.demo.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -64,15 +62,13 @@ public class PublisherService {
     }
 
     public Publisher addNewPublisher(PublisherRequestDTO publisherRequestDTO) {
-        Publisher storedData = new Publisher(
-            UUID.randomUUID().toString(), 
+        Publisher storedData = Publisher.getInstance(
             publisherRequestDTO.name(), 
             publisherRequestDTO.email(), 
             publisherRequestDTO.bio(), 
             publisherRequestDTO.foundYear(), 
             publisherRequestDTO.address(), 
-            publisherRequestDTO.phoneNumber(), 
-            LocalDateTime.now()
+            publisherRequestDTO.phoneNumber()
         );
 
         return publisherRepository.save(storedData);
@@ -87,7 +83,6 @@ public class PublisherService {
         update.set("foundYear", publisherUpdateRequestDTO.foundYear());
         update.set("address", publisherUpdateRequestDTO.address());
         update.set("phoneNumber", publisherUpdateRequestDTO.phoneNumber());
-        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Publisher.class);
     }

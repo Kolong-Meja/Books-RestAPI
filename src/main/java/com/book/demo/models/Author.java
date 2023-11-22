@@ -2,6 +2,7 @@ package com.book.demo.models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -53,20 +54,27 @@ public class Author {
 
     public Author() {}
 
-    public Author(
-        String id, 
-        String fullname,
-        String biography,
-        String email,
-        String phoneNumber, 
-        LocalDateTime createdOn
-        ) {
-        this.id = id;
+    private Author(
+        String fullname, 
+        String biography, 
+        String email, 
+        String phoneNumber
+    ) {
+        this.id = UUID.randomUUID().toString();
         this.fullname = Objects.requireNonNull(fullname);
         this.biography = Objects.requireNonNull(biography);
         this.email = Objects.requireNonNull(getVerifiedEmail(email));
         this.phoneNumber = Objects.requireNonNull(getVerifiedPhoneNumber(phoneNumber));
-        this.createdOn = Objects.requireNonNull(createdOn);
+        this.createdOn = LocalDateTime.now();
+    }
+
+    public static Author getInstance(
+        String fullname, 
+        String biography, 
+        String email, 
+        String phoneNumber
+    ) {
+        return new Author(fullname, biography, email, phoneNumber);
     }
 
     public void changeId(String newValue) {

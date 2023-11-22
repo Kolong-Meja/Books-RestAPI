@@ -1,8 +1,6 @@
 package com.book.demo.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -56,8 +54,7 @@ public class BookService {
         Publisher publisher = mongoTemplate.findOne(new Query(Criteria.where("_id").is(bookRequestDTO.publisherId())), Publisher.class);
         if (publisher == null) throw new NullPointerException(String.format("Publisher with ID %s not found.", bookRequestDTO.publisherId()));
         
-        Book storedData = new Book(
-            UUID.randomUUID().toString(),
+        Book storedData = Book.getInstance(
             bookRequestDTO.isbn(),
             bookRequestDTO.title(),
             bookRequestDTO.synopsis(),
@@ -65,8 +62,7 @@ public class BookService {
             bookRequestDTO.publisherId(),
             bookRequestDTO.publishYear(),
             bookRequestDTO.totalPage(),
-            bookRequestDTO.category(),
-            LocalDateTime.now()
+            bookRequestDTO.category()
         );
         return bookRepository.save(storedData);
     }
@@ -88,7 +84,6 @@ public class BookService {
         update.set("publishYear", bookUpdateRequestDTO.publishYear());
         update.set("totalPage", bookUpdateRequestDTO.totalPage());
         update.set("category", bookUpdateRequestDTO.category());
-        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Book.class);
     }
@@ -102,7 +97,6 @@ public class BookService {
         update.set("publishYear", bookPatchUpdateDTO.publishYear());
         update.set("totalPage", bookPatchUpdateDTO.totalPage());
         update.set("category", bookPatchUpdateDTO.category());
-        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Book.class);
     }

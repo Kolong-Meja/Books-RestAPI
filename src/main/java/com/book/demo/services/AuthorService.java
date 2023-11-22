@@ -1,8 +1,6 @@
 package com.book.demo.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -62,13 +60,11 @@ public class AuthorService {
     }
 
     public Author addNewAuthor(AuthorRequestDTO authorRequestDTO) {
-        Author storedData = new Author(
-            UUID.randomUUID().toString(),
+        Author storedData = Author.getInstance(
             authorRequestDTO.fullname(),
             authorRequestDTO.biography(),
             authorRequestDTO.email(),
-            authorRequestDTO.phoneNumber(),
-            LocalDateTime.now()
+            authorRequestDTO.phoneNumber()
         );
         return authorRepository.save(storedData);
     }
@@ -80,7 +76,6 @@ public class AuthorService {
         update.set("biography", authorUpdateRequestDTO.biography());
         update.set("email", authorUpdateRequestDTO.email());
         update.set("phoneNumber", authorUpdateRequestDTO.phoneNumber());
-        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("id").is(id)), update, Author.class);
     }
