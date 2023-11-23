@@ -21,7 +21,12 @@ import com.book.demo.services.ClientService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    public final static String[] PUBLIC_REQUEST_MATCHERS = { "/api/v1/auth/**", "/api-docs/**", "/swagger-ui/**" };
+    public final static String[] PUBLIC_REQUEST_MATCHERS = { 
+        "/api/v1/auth/**", 
+        "/api-docs/**", 
+        "/swagger-ui/**",
+        "/api/v1/clients/{email}/forget-password" 
+    };
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
