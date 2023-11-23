@@ -58,8 +58,8 @@ public class BookController {
     @GetMapping(value = "/", produces = { "application/json" })
     public ResponseEntity<Object> getAllBooks() {
         List<Book> allExistingBookDatas = bookService.findAllBooks();
-        if (allExistingBookDatas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", allExistingBookDatas);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", allExistingBookDatas);
+        if (allExistingBookDatas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", allExistingBookDatas);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", allExistingBookDatas);
     }
 
     @Operation(summary = "Get book data by specific ID", description = "Get one book data based on specific ID.", tags = "Books")
@@ -72,8 +72,8 @@ public class BookController {
     @GetMapping(value = "/{id}", produces = { "application/json" })
     public ResponseEntity<Object> getOneBookById(@PathVariable String id) {
         Book data = bookService.findBookById(id);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", data);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get all books by specific Title", description = "Get all books based on specific Title.", tags = "Books")
@@ -86,8 +86,8 @@ public class BookController {
     @GetMapping(value = "/title/{title}", produces = { "application/json" })
     public ResponseEntity<Object> getSeveralBooksByTitle(@PathVariable String title) {
         List<Book> data = bookService.findBookByTitle(title);
-        if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", data);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get all books by specific Author ID", description = "Get all books based on specific Author ID.", tags = "Books")
@@ -100,8 +100,8 @@ public class BookController {
     @GetMapping(value = "/author/{authorId}", produces = { "application/json" })
     public ResponseEntity<Object> getSeveralBooksByAuthorId(@PathVariable String authorId) {
         List<Book> data = bookService.findBookByAuthorId(authorId);
-        if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", data);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get all books by specific Category", description = "Get all books based on specific Category.", tags = "Books")
@@ -114,8 +114,8 @@ public class BookController {
     @GetMapping(value = "/category/{regex}", produces = { "application/json" })
     public ResponseEntity<Object> getSeveralBooksByCategory(@PathVariable String regex) {
         List<Book> data = bookService.findBookByCategory(regex);
-        if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", data);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(
@@ -130,7 +130,7 @@ public class BookController {
     @PostMapping(value = "/", consumes = { "text/plain", "application/json" })
     public ResponseEntity<Object> createNewBook(@RequestBody BookRequestDTO bookRequestDTO) {
        Book data = bookService.addNewBook(bookRequestDTO);
-       return ResponseHandler.generateResponse(HttpStatus.CREATED, "Successfully created a new data!", data);
+       return ResponseHandler.generateResponse(HttpStatus.CREATED, true, "Successfully created a new data!", data);
     }
 
     @Operation(
@@ -146,7 +146,7 @@ public class BookController {
     @PutMapping(value = "/{id}", consumes = { "application/json" })
     public ResponseEntity<Object> updateAllBookData(@PathVariable String id, @RequestBody BookUpdateRequestDTO bookUpdateRequestDTO) {
         bookService.renewBook(id, bookUpdateRequestDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully updated existing data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully updated existing data!");
     }
 
     @Operation(
@@ -162,7 +162,7 @@ public class BookController {
     @PatchMapping(value = "/{id}", consumes = { "application/json" })
     public ResponseEntity<Object> updateSeveralBookData(@PathVariable String id, @RequestBody BookPatchUpdateDTO bookPatchUpdateDTO) {
         bookService.renewBook(id, bookPatchUpdateDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully updated existing data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully updated existing data!");
     }
 
     @Operation(
@@ -178,7 +178,7 @@ public class BookController {
     @PatchMapping(value = "/{id}/author", consumes = { "application/json" })
     public ResponseEntity<Object> updateBookAuthorId(@PathVariable String id, @RequestBody BookPatchAuthorIdDTO bookPatchAuthorIdDTO ) {
         bookService.renewAuthor(id, bookPatchAuthorIdDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully updated existing data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully updated existing data!");
     }
 
     @Operation(
@@ -194,7 +194,7 @@ public class BookController {
     @PatchMapping(value = "/{id}/publisher", consumes = { "application/json" })
     public ResponseEntity<Object> updateBookPublisherId(@PathVariable String id, @RequestBody BookPatchPublisherIdDTO bookPatchPublisherIdDTO) {
         bookService.renewPublisher(id, bookPatchPublisherIdDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully updated existing data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully updated existing data!");
     }
 
     @Operation(
@@ -210,7 +210,7 @@ public class BookController {
     @DeleteMapping(value = "/")
     public ResponseEntity<Object> removeAllBooks() {
         bookService.discardBooks();
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully removed all data");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully removed all data");
     }
 
     @Operation(
@@ -226,6 +226,6 @@ public class BookController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> removeOneBook(@PathVariable String id) {
         bookService.discardBook(bookService.findBookById(id).takeCurrentId());
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully removed data");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully removed data");
     }   
 }

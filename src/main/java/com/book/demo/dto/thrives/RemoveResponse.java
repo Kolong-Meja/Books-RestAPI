@@ -9,6 +9,10 @@ public class RemoveResponse {
     @Schema(type = "integer", example = "200")
     private int statusCode;
 
+    @JsonProperty("success")
+    @Schema(type = "boolean", example = "true")
+    private boolean success;
+
     @JsonProperty("message")
     @Schema(type = "string", example = "Successfully removed data!")
     private String message;

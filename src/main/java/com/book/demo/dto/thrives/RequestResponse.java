@@ -13,6 +13,10 @@ public class RequestResponse {
     @Schema(type = "integer", example = "201")
     private int statusCode;
 
+    @JsonProperty("success")
+    @Schema(type = "boolean", example = "true")
+    private boolean success;
+    
     @JsonProperty("message")
     @Schema(type = "string", example = "Successfully created new data!")
     private String message;

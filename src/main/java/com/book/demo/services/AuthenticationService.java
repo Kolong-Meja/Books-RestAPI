@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.book.demo.dto.client.ClientDTO;
 import com.book.demo.dto.client.ClientLoginDTO;
-import com.book.demo.dto.thrives.AuthenticationResponse;
 import com.book.demo.models.Client;
 import com.book.demo.models.Role;
 import com.book.demo.repositories.ClientRepository;
@@ -34,7 +33,7 @@ public class AuthenticationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AuthenticationResponse signUp(ClientDTO clientDTO) {
+    public String signUp(ClientDTO clientDTO) {
         Client client = Client.getInstance( 
             clientDTO.fullname(), 
             clientDTO.email(), 
@@ -45,10 +44,10 @@ public class AuthenticationService {
 
         String token = jwtService.generateToken(client);
         
-        return new AuthenticationResponse(token);
+        return token;
     }
 
-    public AuthenticationResponse signIn(ClientLoginDTO clientLoginDTO) {
+    public String signIn(ClientLoginDTO clientLoginDTO) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(clientLoginDTO.email(), clientLoginDTO.password())
         );
@@ -58,6 +57,6 @@ public class AuthenticationService {
 
         String token = jwtService.generateToken(client);
 
-        return new AuthenticationResponse(token);
+        return token;
     }
 }

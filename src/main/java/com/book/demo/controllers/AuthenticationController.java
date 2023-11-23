@@ -13,7 +13,6 @@ import com.book.demo.dto.client.ClientLoginDTO;
 import com.book.demo.dto.errors.BadRequest;
 import com.book.demo.dto.errors.InternalServerError;
 import com.book.demo.dto.handlers.ResponseHandler;
-import com.book.demo.dto.thrives.AuthenticationResponse;
 import com.book.demo.dto.thrives.GetResponse;
 import com.book.demo.dto.thrives.RequestResponse;
 import com.book.demo.services.AuthenticationService;
@@ -40,8 +39,8 @@ public class AuthenticationController {
     })
     @PostMapping(value = "signup", consumes = { "application/json" })
     public ResponseEntity<Object> signUpAccount(@RequestBody ClientDTO clientDTO) {
-        AuthenticationResponse data = authenticationService.signUp(clientDTO);
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Successfully sign up new account!", data);
+        String data = authenticationService.signUp(clientDTO);
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, true, "Successfully sign up new account!", data);
     }
 
     @Operation(summary = "Login exist account", description = "Login exist account, and get a response from it.", tags = "Authentications")
@@ -52,7 +51,7 @@ public class AuthenticationController {
     })
     @PostMapping(value = "signin", consumes = { "application/json" })
     public ResponseEntity<Object> signInAccount(@RequestBody ClientLoginDTO clientLoginDTO) {
-        AuthenticationResponse data = authenticationService.signIn(clientLoginDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully sign in account!", data);
+        String data = authenticationService.signIn(clientLoginDTO);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully sign in account!", data);
     }
 }

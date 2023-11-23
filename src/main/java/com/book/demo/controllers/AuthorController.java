@@ -55,8 +55,8 @@ public class AuthorController {
     @GetMapping(value = "/", produces = { "application/json" })
     public ResponseEntity<Object> getAllAuthorData() {
         List<Author> datas = authorService.findAllAuthors();
-        if (datas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", datas);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", datas); 
+        if (datas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", datas);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", datas); 
     }
 
     @Operation(summary = "Get author data by specific ID", description = "Get one author data based on specific ID.", tags = "Authors")
@@ -69,8 +69,8 @@ public class AuthorController {
     @GetMapping(value = "/{id}", produces = { "application/json" })
     public ResponseEntity<Object> getAuthorById(@PathVariable String id) {
         Author data = authorService.findAuthorById(id);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", data);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get all authors by specifiec name", description = "Get all authors from specified name, and get response from it.", tags = "Authors")
@@ -83,8 +83,8 @@ public class AuthorController {
     @GetMapping(value = "/fullname/{fullname}", produces = { "application/json" })
     public ResponseEntity<Object> getAuthorByName(@PathVariable String name) {
         List<Author> datas = authorService.findAuthorByName(name);
-        if (datas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved all data!", datas);
+        if (datas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved all data!", datas);
     }
 
     @Operation(summary = "Get author data by specific email", description = "Get one author data based on specific email.", tags = "Authors")
@@ -97,8 +97,8 @@ public class AuthorController {
     @GetMapping(value = "/email/{email}", produces = { "application/json" })
     public ResponseEntity<Object> getAuthorByEmail(@PathVariable String email) {
         Author data = authorService.findAuthorByEmail(email);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found", data);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get author and they books from specific author ID", description = "Get author and they books from specific author ID.", tags = "Authors")
@@ -111,8 +111,8 @@ public class AuthorController {
     @GetMapping(value = "/{id}/books", produces = { "application/json" })
     public ResponseEntity<Object> getAuthorBooks(@PathVariable String id) {
         AuthorBooksDTO data = authorService.findAuthorBooks(id);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(
@@ -127,7 +127,7 @@ public class AuthorController {
     @PostMapping(value = "/", consumes = { "text/plain", "application/json" })
     public ResponseEntity<Object> newAuthor(@RequestBody AuthorRequestDTO authorRequestDTO) {
         Author data = authorService.addNewAuthor(authorRequestDTO);
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Successfully created a new data!", data);
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, true,  "Successfully created a new data!", data);
     }
 
     @Operation(
@@ -143,7 +143,7 @@ public class AuthorController {
     @PutMapping(value = "/{id}", consumes = { "application/json" })
     public ResponseEntity<Object> renewAuthor(@PathVariable String id, @RequestBody AuthorUpdateRequestDTO authorUpdateRequestDTO) {
         authorService.renewAuthor(id, authorUpdateRequestDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully update data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully update data!");
     }
 
     @Operation(
@@ -159,7 +159,7 @@ public class AuthorController {
     @DeleteMapping(value = "/")
     public ResponseEntity<Object> removeAuthors() {
         authorService.discardAuthors();
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully removed all data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully removed all data!");
     }
 
     @Operation(
@@ -175,6 +175,6 @@ public class AuthorController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> removeAuthor(@PathVariable String id) {
         authorService.discardAuthor(id);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully removed data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully removed data!");
     }
 }

@@ -42,8 +42,8 @@ public class ClientController {
     @GetMapping(value = "/{id}", produces = { "application/json" })
     public ResponseEntity<Object> getOneClientById(@PathVariable String id) {
         Client data = clientService.findClientById(id);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data); 
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data); 
     }
 
     @Operation(summary = "Get client data by specific email", description = "Get one client data based on specific email.", tags = "Clients")
@@ -56,7 +56,7 @@ public class ClientController {
     @GetMapping(value = "/email/{email}", produces = { "application/json" })
     public ResponseEntity<Object> getOneClientByEmail(@PathVariable String email) {
         Client data = clientService.findClientByEmail(email);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 }

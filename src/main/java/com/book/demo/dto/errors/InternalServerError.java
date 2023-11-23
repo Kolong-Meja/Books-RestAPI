@@ -13,6 +13,10 @@ public class InternalServerError {
     @Schema(type = "integer", example = "500")
     private int statusCode;
 
+    @JsonProperty("success")
+    @Schema(type = "boolean", example = "false")
+    private boolean success;
+
     @JsonProperty("message")
     @Schema(type = "string", example = "Internal Server Error")
     private String message;

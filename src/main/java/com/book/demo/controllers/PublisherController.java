@@ -55,8 +55,8 @@ public class PublisherController {
     @GetMapping(value = "/", produces = { "application/json" })
     public ResponseEntity<Object> getAllPublishers() {
         List<Publisher> datas = publisherService.findAllPublishers();
-        if (datas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved all data!", datas);
+        if (datas.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved all data!", datas);
     }
 
     @Operation(summary = "Get publisher data by specific ID", description = "Get one publisher data based on specific ID.", tags = "Publishers")
@@ -69,8 +69,8 @@ public class PublisherController {
     @GetMapping(value = "/{id}", produces = { "application/json" })
     public ResponseEntity<Object> getOnePublisherById(@PathVariable String id) {
         Publisher data = publisherService.findPublisherById(id);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get publisher by specific name", description = "Get one publisher based on specific name.", tags = "Publishers")
@@ -83,8 +83,8 @@ public class PublisherController {
     @GetMapping(value = "/name/{name}", produces = { "application/json" })
     public ResponseEntity<Object> getOnePublisherByName(@PathVariable String name) {
         Publisher data = publisherService.findPublisherByName(name);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get publisher by specific email", description = "Get one publisher based on specific email.", tags = "Publishers")
@@ -97,8 +97,8 @@ public class PublisherController {
     @GetMapping(value = "/email/{email}", produces = { "application/json" })
     public ResponseEntity<Object> getOnePublisherByEmail(@PathVariable String email) {
         Publisher data = publisherService.findPublisherByEmail(email);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(summary = "Get publisher and they books from specific publisher ID", description = "Get publisher and they books from specific publisher ID.", tags = "Publishers")
@@ -111,8 +111,8 @@ public class PublisherController {
     @GetMapping(value = "/{id}/books", produces = { "application/json" })
     public ResponseEntity<Object> getPublisherBooks(@PathVariable String id) {
         PublisherBooksDTO data = publisherService.findPublisherBooks(id);
-        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, "Data does not found.");
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully retrieved data!", data);
+        if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
     @Operation(
@@ -127,7 +127,7 @@ public class PublisherController {
     @PostMapping(value = "/", consumes = { "application/json" })
     public ResponseEntity<Object> createNewPublisher(@RequestBody PublisherRequestDTO publisherRequestDTO) {
         Publisher data = publisherService.addNewPublisher(publisherRequestDTO);
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Successfully created new data!", data);
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, true, "Successfully created new data!", data);
     }
 
     @Operation(
@@ -143,7 +143,7 @@ public class PublisherController {
     @PutMapping(value = "/{id}", consumes = { "application/json" })
     public ResponseEntity<Object> updateAllPublisherData(@PathVariable String id, @RequestBody PublisherUpdateRequestDTO publisherUpdateRequestDTO) {
         publisherService.renewPublisher(id, publisherUpdateRequestDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully updated exist data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully updated exist data!");
     }
 
     @Operation(
@@ -159,7 +159,7 @@ public class PublisherController {
     @DeleteMapping(value = "/")
     public ResponseEntity<Object> removeAllPublishers() {
         publisherService.discardPublishers();
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully removed all data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully removed all data!");
     }
 
     @Operation(
@@ -175,6 +175,6 @@ public class PublisherController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> removeOnePublisher(@PathVariable String id) {
         publisherService.discardPublisher(id);
-        return ResponseHandler.generateResponse(HttpStatus.OK, "Successfully removed data!");
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully removed data!");
     }
 }

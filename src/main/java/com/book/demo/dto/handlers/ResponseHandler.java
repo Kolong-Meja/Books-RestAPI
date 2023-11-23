@@ -9,17 +9,28 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResponseHandler {
-    public static ResponseEntity<Object> generateResponse(HttpStatus httpStatus, String message) {
+    public static ResponseEntity<Object> generateResponse(
+        HttpStatus httpStatus, 
+        boolean isSuccess, 
+        String message
+    ) {
         Map<String, Object> responseResult = new LinkedHashMap<String, Object>();
         responseResult.put("statusCode", httpStatus.value());
+        responseResult.put("success", isSuccess);
         responseResult.put("message", message);
 
         return new ResponseEntity<Object>(responseResult, httpStatus);
     }
 
-    public static ResponseEntity<Object> generateResponse(HttpStatus httpStatus, String message, Object data) {
+    public static ResponseEntity<Object> generateResponse(
+        HttpStatus httpStatus,
+        boolean isSuccess, 
+        String message, 
+        Object data
+    ) {
         Map<String, Object> responseResult = new LinkedHashMap<String, Object>();
         responseResult.put("statusCode", httpStatus.value());
+        responseResult.put("success", isSuccess);
         responseResult.put("message", message);
         responseResult.put("data", data);
 

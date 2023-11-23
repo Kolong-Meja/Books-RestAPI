@@ -13,6 +13,10 @@ public class DataNotFound {
     @Schema(type = "integer", example = "404")
     private int statudCode;
 
+    @JsonProperty("success")
+    @Schema(type = "boolean", example = "false")
+    private boolean success;
+
     @JsonProperty("message")
     @Schema(type = "string", example = "Data does not found.")
     private String message;
