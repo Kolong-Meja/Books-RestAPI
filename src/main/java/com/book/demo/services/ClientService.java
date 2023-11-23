@@ -24,4 +24,12 @@ public class ClientService implements UserDetailsService {
 
         return client;
     }
+
+    public Client findClientById(String id) {
+        return mongoTemplate.findById(id, Client.class);
+    }
+
+    public Client findClientByEmail(String email) {
+        return mongoTemplate.findOne(new Query(Criteria.where("email").is(email)), Client.class);
+    }
 }

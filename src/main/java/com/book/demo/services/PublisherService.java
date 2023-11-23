@@ -1,5 +1,6 @@
 package com.book.demo.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,7 @@ public class PublisherService {
         update.set("foundYear", publisherUpdateRequestDTO.foundYear());
         update.set("address", publisherUpdateRequestDTO.address());
         update.set("phoneNumber", publisherUpdateRequestDTO.phoneNumber());
+        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Publisher.class);
     }

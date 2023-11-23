@@ -29,10 +29,5 @@ public record AuthorUpdateRequestDTO(
     @NotNull
     @JsonProperty("phoneNumber")
     @Schema(type = "string", example = "+021-7665-8765", description = "Phone Number of the author.", nullable = false)
-    String phoneNumber,
-
-    @Nullable
-    @JsonProperty("createdOn")
-    @Schema(type = "string", format = "date-time", description = "Create date of the book.")
-    LocalDateTime createdOn
+    String phoneNumber
 ) {}

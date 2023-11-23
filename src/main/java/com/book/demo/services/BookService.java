@@ -1,5 +1,6 @@
 package com.book.demo.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,7 @@ public class BookService {
         update.set("publishYear", bookUpdateRequestDTO.publishYear());
         update.set("totalPage", bookUpdateRequestDTO.totalPage());
         update.set("category", bookUpdateRequestDTO.category());
+        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Book.class);
     }
@@ -97,6 +99,7 @@ public class BookService {
         update.set("publishYear", bookPatchUpdateDTO.publishYear());
         update.set("totalPage", bookPatchUpdateDTO.totalPage());
         update.set("category", bookPatchUpdateDTO.category());
+        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Book.class);
     }
@@ -107,6 +110,7 @@ public class BookService {
         
         Update update = new Update();
         update.set("authorId", author.takeCurrentId());
+        update.set("createdOn", LocalDateTime.now());
         
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Book.class);
     }
@@ -117,6 +121,7 @@ public class BookService {
 
         Update update = new Update();
         update.set("publisherId", bookPatchPublisherIdDTO.publisherId());
+        update.set("createdOn", LocalDateTime.now());
         
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Book.class);
     }

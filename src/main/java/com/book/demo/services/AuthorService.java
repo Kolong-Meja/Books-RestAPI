@@ -1,5 +1,6 @@
 package com.book.demo.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,13 @@ public class AuthorService {
         if (datas.isEmpty()) throw new NullPointerException(String.format("Books with author ID %s not found", authorId));
 
         AuthorBooksDTO authorBooksDTO = new AuthorBooksDTO(
+            data.takeCurrentId(),
             data.takeFullName(), 
             data.takeBiography(), 
             data.takeEmail(), 
             data.takePhoneNumber(), 
-            datas, 
-            data.takeCreatedOn()
+            datas,
+            LocalDateTime.now()
         );
 
         return authorBooksDTO;
@@ -76,6 +78,7 @@ public class AuthorService {
         update.set("biography", authorUpdateRequestDTO.biography());
         update.set("email", authorUpdateRequestDTO.email());
         update.set("phoneNumber", authorUpdateRequestDTO.phoneNumber());
+        update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("id").is(id)), update, Author.class);
     }
