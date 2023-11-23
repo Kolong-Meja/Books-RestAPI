@@ -39,8 +39,8 @@ public class AuthenticationController {
     })
     @PostMapping(value = "signup", consumes = { "application/json" })
     public ResponseEntity<Object> signUpAccount(@RequestBody ClientDTO clientDTO) {
-        String data = authenticationService.signUp(clientDTO);
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, true, "Successfully sign up new account!", data);
+        String token = authenticationService.signUp(clientDTO);
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, true, "Successfully sign up new account!", token);
     }
 
     @Operation(summary = "Login exist account", description = "Login exist account, and get a response from it.", tags = "Authentications")
@@ -51,7 +51,7 @@ public class AuthenticationController {
     })
     @PostMapping(value = "signin", consumes = { "application/json" })
     public ResponseEntity<Object> signInAccount(@RequestBody ClientLoginDTO clientLoginDTO) {
-        String data = authenticationService.signIn(clientLoginDTO);
-        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully sign in account!", data);
+        String token = authenticationService.signIn(clientLoginDTO);
+        return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully sign in account!", token);
     }
 }
