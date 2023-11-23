@@ -10,11 +10,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record BookRequestDTO(
-    @Nullable
-    @JsonProperty("id")
-    @Schema(type = "string", format = "uuid", description = "ID of the book. [NOTE] this will auto generate, so you can skip it.")
-    String id,
-
     @NotNull
     @JsonProperty("isbn")
     @Schema(type = "integer", description = "ISBN number of the book.", nullable = false)
@@ -55,10 +50,5 @@ public record BookRequestDTO(
     @Size(min = 0, max = 255, message = "Maximum size limit character of this field is 255")
     @JsonProperty("category")
     @Schema(type = "string", example = "Adventure Horror", description = "Categories of the book.", nullable = false)
-    String category,
-
-    @Nullable
-    @JsonProperty("createdOn")
-    @Schema(type = "string", format = "date-time", example = "2017-07-21T17:32:28Z", description = "Create date of the book data")
-    LocalDateTime createdOn
+    String category
 ) {}

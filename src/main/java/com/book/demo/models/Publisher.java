@@ -97,67 +97,67 @@ public class Publisher {
         );
     }
 
-    public void setCurrentId(String newId) {
+    public void changeCurrentId(String newId) {
         this.id = newId;
     }
 
-    public void setName(String newName) {
+    public void changeName(String newName) {
         this.name = newName;
     }
 
-    public void setEmail(String newEmail) {
+    public void changeEmail(String newEmail) {
         this.email = newEmail;
     }
 
-    public void setBio(String newBio) {
+    public void changeBio(String newBio) {
         this.bio = newBio;
     }
 
-    public void setFoundYear(int newFoundYear) {
+    public void changeFoundYear(int newFoundYear) {
         this.foundYear = newFoundYear;
     }
 
-    public void setAddress(String newAddress) {
+    public void changeAddress(String newAddress) {
         this.address = newAddress;
     }
 
-    public void setPhoneNumber(String newPhoneNumber) {
+    public void changePhoneNumber(String newPhoneNumber) {
         this.phoneNumber = newPhoneNumber;
     }
 
-    public void setCreatedOn(LocalDateTime newDateTime) {
+    public void changeCreatedOn(LocalDateTime newDateTime) {
         this.createdOn = newDateTime;
     }
 
-    public String getId() {
+    public String takeCurrentId() {
         return this.id;
     }
 
-    public String getName() {
+    public String takeName() {
         return this.name;
     }
 
-    public String getEmail() {
+    public String takeEmail() {
         return this.email;
     }
 
-    public String getBio() {
+    public String takeBio() {
         return this.bio;
     }
 
-    public int getFoundYear() {
+    public int takeFoundYear() {
         return this.foundYear;
     }
 
-    public String getAddress() {
+    public String takeAddress() {
         return this.address;
     }
 
-    public String getPhoneNumber() {
+    public String takePhoneNumber() {
         return this.phoneNumber;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public LocalDateTime takeCreatedOn() {
         return this.createdOn;
     }
 

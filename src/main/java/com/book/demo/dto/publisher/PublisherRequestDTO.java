@@ -10,11 +10,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record PublisherRequestDTO(
-    @Nullable
-    @JsonProperty("id")
-    @Schema(type = "string", format = "uuid", description = "ID of the publisher")
-    String id,
-
     @NotNull
     @Size(min = 0, max = 255, message = "Maximum size limit character of this field is 255")
     @JsonProperty("name")
@@ -43,10 +38,5 @@ public record PublisherRequestDTO(
     @NotNull
     @JsonProperty("phoneNumber")
     @Schema(type = "string", example = "+021-7766-5544", description = "Phone Number of the publisher", nullable = false)
-    String phoneNumber,
-
-    @Nullable
-    @JsonProperty("createdOn")
-    @Schema(type = "string", format = "date-time", description = "Create date time of the publisher data")
-    LocalDateTime createdOn
+    String phoneNumber
 ) {}

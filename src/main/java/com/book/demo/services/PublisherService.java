@@ -49,14 +49,15 @@ public class PublisherService {
         if (datas.isEmpty()) throw new NullPointerException(String.format("Books with author ID %s not found", publisherId));
         
         PublisherBooksDTO publisherBooksDTO = new PublisherBooksDTO(
-            data.getName(), 
-            data.getEmail(), 
-            data.getBio(), 
-            data.getFoundYear(), 
-            data.getAddress(), 
-            data.getPhoneNumber(), 
+            data.takeCurrentId(),
+            data.takeName(), 
+            data.takeEmail(), 
+            data.takeBio(), 
+            data.takeFoundYear(), 
+            data.takeAddress(), 
+            data.takePhoneNumber(), 
             datas, 
-            data.getCreatedOn()
+            data.takeCreatedOn()
         );
 
         return publisherBooksDTO;

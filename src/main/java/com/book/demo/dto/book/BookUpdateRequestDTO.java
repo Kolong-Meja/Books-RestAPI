@@ -1,9 +1,6 @@
 package com.book.demo.dto.book;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mongodb.lang.Nullable;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -50,10 +47,5 @@ public record BookUpdateRequestDTO(
     @Size(min = 0, max = 255, message = "Maximum size limit character of this field is 255")
     @JsonProperty("category")
     @Schema(type = "string", example = "Adventure Horror", description = "Categories of the book.", nullable = false)
-    String category,
-
-    @Nullable
-    @JsonProperty("createdOn")
-    @Schema(type = "string", format = "date-time", example = "2017-07-21T17:32:28Z", description = "Create date of the book data")
-    LocalDateTime createdOn
+    String category
 ) {}

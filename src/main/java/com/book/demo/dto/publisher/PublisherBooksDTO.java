@@ -10,6 +10,10 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record PublisherBooksDTO(
+    @JsonProperty("id")
+    @Schema(type = "string", format = "uuid", description = "ID of the publisher.", nullable = true)
+    String id,
+    
     @JsonProperty("name")
     @Schema(type = "string", description = "Name of the publisher", nullable = false)
     String name,

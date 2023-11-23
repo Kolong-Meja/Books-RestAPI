@@ -82,27 +82,27 @@ public class Client implements UserDetails {
         return new Client(fullname, email, password, role);
     }
 
-    public void setCurrentId(String newValue) {
+    public void changeCurrentId(String newValue) {
         this.id = newValue;
     }
 
-    public void setFullName(String newValue) {
+    public void changeFullName(String newValue) {
         this.fullname = newValue;
     }
 
-    public void setEmail(String newValue) {
+    public void changeEmail(String newValue) {
         this.email = newValue;
     }
 
-    public void setPassword(String newValue) {
+    public void changePassword(String newValue) {
         this.password = newValue;
     }
 
-    public void setRole(Role newValue) {
+    public void changeRole(Role newValue) {
         this.role = newValue;
     }
 
-    public void setCreatedOn(LocalDateTime newDateTime) {
+    public void changeCreatedOn(LocalDateTime newDateTime) {
         this.createdOn = newDateTime;
     }
 

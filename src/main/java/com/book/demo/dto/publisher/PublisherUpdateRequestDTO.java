@@ -1,9 +1,6 @@
 package com.book.demo.dto.publisher;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mongodb.lang.Nullable;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -38,10 +35,5 @@ public record PublisherUpdateRequestDTO(
     @NotNull
     @JsonProperty("phoneNumber")
     @Schema(type = "string", example = "+021-7766-5544", description = "Phone Number of the publisher", nullable = false)
-    String phoneNumber,
-
-    @Nullable
-    @JsonProperty("createdOn")
-    @Schema(type = "string", format = "date-time", description = "Create date time of the publisher data")
-    LocalDateTime createdOn
+    String phoneNumber
 ) {}
