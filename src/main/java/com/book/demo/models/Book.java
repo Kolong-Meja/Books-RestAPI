@@ -60,6 +60,11 @@ public class Book {
     @Field("totalPage")
     private int totalPage;
 
+    @JsonProperty("price")
+    @Schema(type = "number", format = "double", description = "Price of the book in US dollar", nullable = false)
+    @Field("price")
+    private double price;
+
     @Size(min = 0, max = 255, message = "Maximum size limit character of this field is 255")
     @JsonProperty("category")
     @Schema(type = "string", description = "Category of the book.", nullable = false)
@@ -81,7 +86,8 @@ public class Book {
         String authorId,
         String publisherId, 
         int publishYear, 
-        int totalPage, 
+        int totalPage,
+        double price, 
         String category
     ) {
         this.id = UUID.randomUUID().toString();
@@ -93,6 +99,7 @@ public class Book {
         this.publishYear = Objects.requireNonNull(publishYear);
         this.totalPage = Objects.requireNonNull(totalPage);
         this.category = Objects.requireNonNull(category);
+        this.price = Objects.requireNonNull(price);
         this.createdOn = LocalDateTime.now();
     }
 
@@ -103,7 +110,8 @@ public class Book {
         String authorId,
         String publisherId, 
         int publishYear, 
-        int totalPage, 
+        int totalPage,
+        double price,
         String category
     ) {
         return new Book(
@@ -114,6 +122,7 @@ public class Book {
             publisherId, 
             publishYear, 
             totalPage, 
+            price,
             category
         );
     }
@@ -150,6 +159,10 @@ public class Book {
         this.totalPage = newValue;
     }
 
+    public void changePrice(double newValue) {
+        this.price = newValue;
+    }
+
     public void changeCategory(String newValue) {
         this.category = newValue;
     }
@@ -166,11 +179,11 @@ public class Book {
         return this.isbn;
     }
 
-    public String takeTitle() {
+    public String takeBookTitle() {
         return this.title;
     }
 
-    public String takeSynopsis() {
+    public String takeBookSynopsis() {
         return this.synopsis;
     }
 
@@ -190,6 +203,10 @@ public class Book {
         return this.totalPage;
     }
 
+    public double takeBookPrice() {
+        return this.price;
+    }
+
     public String takeBookCategory() {
         return this.category;
     }
@@ -201,7 +218,7 @@ public class Book {
     @Override
     public String toString() {
         return String.format(
-            "Book{id=%s, isbn=%d, title=%s, synopsis=%s, authorId=%s, publisherId=%s, publishYear=%d, totalPage=%d, category=%s, createdOn=%s}", 
+            "Book{id=%s, isbn=%d, title=%s, synopsis=%s, authorId=%s, publisherId=%s, publishYear=%d, totalPage=%d, price=%d, category=%s, createdOn=%s}", 
             id, 
             isbn,
             title, 
@@ -210,6 +227,7 @@ public class Book {
             publisherId, 
             publishYear, 
             totalPage, 
+            price,
             category, 
             createdOn
         );

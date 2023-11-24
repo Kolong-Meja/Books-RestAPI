@@ -13,11 +13,22 @@ public record ClientUpdateRequestDTO(
     
     @NotNull
     @JsonProperty("email")
-    @Schema(type = "string", format = "email", description = "Email of the client.")
+    @Schema(
+        type = "string", 
+        format = "email", 
+        description = "Email of the client.",
+        pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+        nullable = false
+    )
     String email,
 
     @NotNull
     @JsonProperty("password")
-    @Schema(type = "string", description = "Password of the client.")
+    @Schema(
+        type = "string", 
+        description = "Password of the client.", 
+        pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", 
+        nullable = false
+    )
     String password
 ) {}

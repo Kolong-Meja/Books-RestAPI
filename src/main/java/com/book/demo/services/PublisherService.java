@@ -52,10 +52,10 @@ public class PublisherService {
             data.takeCurrentId(),
             data.takeName(), 
             data.takeEmail(), 
-            data.takeBio(), 
-            data.takeFoundYear(), 
-            data.takeAddress(), 
             data.takePhoneNumber(), 
+            data.takeBio(), 
+            data.takeAddress(), 
+            data.takeFoundYear(), 
             datas, 
             data.takeCreatedOn()
         );
@@ -67,10 +67,10 @@ public class PublisherService {
         Publisher storedData = Publisher.getInstance(
             publisherRequestDTO.name(), 
             publisherRequestDTO.email(), 
+            publisherRequestDTO.phoneNumber(),
             publisherRequestDTO.bio(), 
-            publisherRequestDTO.foundYear(), 
             publisherRequestDTO.address(), 
-            publisherRequestDTO.phoneNumber()
+            publisherRequestDTO.foundYear() 
         );
 
         return publisherRepository.save(storedData);
@@ -81,10 +81,10 @@ public class PublisherService {
 
         update.set("name", publisherUpdateRequestDTO.name());
         update.set("email", publisherUpdateRequestDTO.email());
-        update.set("bio", publisherUpdateRequestDTO.bio());
-        update.set("foundYear", publisherUpdateRequestDTO.foundYear());
-        update.set("address", publisherUpdateRequestDTO.address());
         update.set("phoneNumber", publisherUpdateRequestDTO.phoneNumber());
+        update.set("bio", publisherUpdateRequestDTO.bio());
+        update.set("address", publisherUpdateRequestDTO.address());
+        update.set("foundYear", publisherUpdateRequestDTO.foundYear());
         update.set("createdOn", LocalDateTime.now());
 
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Publisher.class);

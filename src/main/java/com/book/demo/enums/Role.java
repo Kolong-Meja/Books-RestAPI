@@ -1,4 +1,4 @@
-package com.book.demo.models;
+package com.book.demo.enums;
 
 public enum Role {
     USER, ADMIN

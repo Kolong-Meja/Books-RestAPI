@@ -44,6 +44,11 @@ public record BookRequestDTO(
     int totalPage,
 
     @NotNull
+    @JsonProperty("price")
+    @Schema(type = "number", format = "double", description = "Price of the book in US dollar", nullable = false)
+    double price,
+
+    @NotNull
     @Size(min = 0, max = 255, message = "Maximum size limit character of this field is 255")
     @JsonProperty("category")
     @Schema(type = "string", example = "Adventure Horror", description = "Categories of the book.", nullable = false)

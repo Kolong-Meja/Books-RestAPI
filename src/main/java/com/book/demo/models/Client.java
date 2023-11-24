@@ -7,12 +7,15 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.book.demo.enums.Role;
+import com.book.demo.utils.VerifiedDataUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.Nullable;
 
@@ -35,14 +38,26 @@ public class Client implements UserDetails {
 
     @NotNull
     @Email
+    @Indexed(unique = true)
     @JsonProperty("email")
-    @Schema(type = "string", format = "email", description = "Email of the client.")
+    @Schema(
+        type = "string", 
+        format = "email", 
+        description = "Email of the client.",
+        pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+        nullable = false
+    )
     @Field("email")
     private String email;
 
     @NotNull
     @JsonProperty("password")
-    @Schema(type = "string", description = "Password of the client.")
+    @Schema(
+        type = "string", 
+        description = "Password of the client.", 
+        pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+        nullable = false
+    )
     @Field("password")
     private String password;
 
@@ -67,8 +82,8 @@ public class Client implements UserDetails {
     ) {
         this.id = UUID.randomUUID().toString();
         this.fullname = Objects.requireNonNull(fullname);
-        this.email = Objects.requireNonNull(getVerifiedEmail(email));
-        this.password = Objects.requireNonNull(password);
+        this.email = Objects.requireNonNull(VerifiedDataUtil.getVerifiedEmail(email));
+        this.password = Objects.requireNonNull(VerifiedDataUtil.getVerifiedPassword(password));
         this.role = Objects.requireNonNull(role);
         this.createdOn = LocalDateTime.now();
     }
@@ -133,14 +148,6 @@ public class Client implements UserDetails {
     @Override
     public String toString() {
         return String.format("Cleint{id=%s, fullname=%s, email=%s, password=%s, role=%s, createdOn=%s}", id, fullname, email, password, role, createdOn);
-    }
-
-    private static final String getVerifiedEmail(String email) {
-        if (!email.contains("@") && !email.contains(".com")) {
-            throw new IllegalArgumentException(String.format("'%s' not a verified email.", email));
-        } else {
-            return email;
-        }
     }
 
     @Override

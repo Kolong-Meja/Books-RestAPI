@@ -14,8 +14,25 @@ public record PublisherUpdateRequestDTO(
 
     @NotNull
     @JsonProperty("email")
-    @Schema(type = "string", format = "email", description = "Email of the publisher", nullable = false)
+    @Schema(
+        type = "string", 
+        format = "email", 
+        description = "Email of the publisher", 
+        pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+        nullable = false
+    )
     String email,
+
+    @NotNull
+    @JsonProperty("phoneNumber")
+    @Schema(
+        type = "string", 
+        example = "+919367788755", 
+        description = "Phone Number of the publisher",
+        pattern =  "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$", 
+        nullable = false
+    )
+    String phoneNumber,
 
     @NotNull
     @JsonProperty("bio")
@@ -23,17 +40,12 @@ public record PublisherUpdateRequestDTO(
     String bio,
 
     @NotNull
-    @JsonProperty("foundYear")
-    @Schema(type = "integer", example = "2017", description = "Year of publisher was founded", nullable = false)
-    int foundYear,
-
-    @NotNull
     @JsonProperty("address")
     @Schema(type = "string", format = "address", description = "Address of the publisher", nullable = false)
     String address,
 
     @NotNull
-    @JsonProperty("phoneNumber")
-    @Schema(type = "string", example = "+021-7766-5544", description = "Phone Number of the publisher", nullable = false)
-    String phoneNumber
+    @JsonProperty("foundYear")
+    @Schema(type = "integer", example = "2017", description = "Year of publisher was founded", nullable = false)
+    int foundYear
 ) {}

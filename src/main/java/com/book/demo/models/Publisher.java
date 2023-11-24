@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.book.demo.utils.VerifiedDataUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.Nullable;
 
@@ -30,29 +31,41 @@ public class Publisher {
     
     @Indexed(unique = true)
     @JsonProperty("email")
-    @Schema(type = "string", format = "email", description = "Email of the publisher", nullable = false)
+    @Schema(
+        type = "string", 
+        format = "email", 
+        description = "Email of the publisher", 
+        pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+        nullable = false
+    )
     @Field("email")
     private String email;
+    
+    @Indexed(unique = true)
+    @JsonProperty("phoneNumber")
+    @Schema(
+        type = "string", 
+        example = "+919367788755", 
+        description = "Phone Number of the publisher",
+        pattern = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$",
+        nullable = false
+    )
+    private String phoneNumber;
     
     @JsonProperty("bio")
     @Schema(type = "string", description = "Short bio of the publisher")
     @Field("bio")
     private String bio;
 
-    @JsonProperty("foundYear")
-    @Schema(type = "integer", example = "2017", description = "Year of publisher was founded", nullable = false)
-    @Field("foundYear")
-    private int foundYear;
-
     @JsonProperty("address")
     @Schema(type = "string", format = "address", description = "Address of the publisher", nullable = false)
     @Field("address")
     private String address;
-
-    @Indexed(unique = true)
-    @JsonProperty("phoneNumber")
-    @Schema(type = "string", format = "phone-number", description = "Phone Number of the publisher", nullable = false)
-    private String phoneNumber;
+    
+    @JsonProperty("foundYear")
+    @Schema(type = "integer", example = "2017", description = "Year of publisher was founded", nullable = false)
+    @Field("foundYear")
+    private int foundYear;
 
     @Nullable
     @JsonProperty("createdOn")
@@ -64,36 +77,36 @@ public class Publisher {
     private Publisher( 
         String name, 
         String email, 
+        String phoneNumber,
         String bio, 
-        int foundYear, 
         String address, 
-        String phoneNumber
+        int foundYear
     ) {
         this.id = UUID.randomUUID().toString();
         this.name = Objects.requireNonNull(name);
-        this.email = Objects.requireNonNull(getVerifiedEmail(email));
+        this.email = Objects.requireNonNull(VerifiedDataUtil.getVerifiedEmail(email));
+        this.phoneNumber = Objects.requireNonNull(VerifiedDataUtil.getVerifiedPhoneNumber(phoneNumber));
         this.bio = Objects.requireNonNull(bio);
         this.foundYear = Objects.requireNonNull(foundYear);
         this.address = Objects.requireNonNull(address);
-        this.phoneNumber = Objects.requireNonNull(getVerifiedPhoneNumber(phoneNumber));
         this.createdOn = LocalDateTime.now();
     }
 
     public static Publisher getInstance(
         String name, 
         String email, 
+        String phoneNumber,
         String bio, 
-        int foundYear, 
         String address, 
-        String phoneNumber
+        int foundYear
     ) {
         return new Publisher(
             name, 
             email, 
+            phoneNumber,
             bio, 
-            foundYear, 
             address, 
-            phoneNumber
+            foundYear 
         );
     }
 
@@ -109,20 +122,20 @@ public class Publisher {
         this.email = newEmail;
     }
 
-    public void changeBio(String newBio) {
-        this.bio = newBio;
+    public void changePhoneNumber(String newPhoneNumber) {
+        this.phoneNumber = newPhoneNumber;
     }
 
-    public void changeFoundYear(int newFoundYear) {
-        this.foundYear = newFoundYear;
+    public void changeBio(String newBio) {
+        this.bio = newBio;
     }
 
     public void changeAddress(String newAddress) {
         this.address = newAddress;
     }
 
-    public void changePhoneNumber(String newPhoneNumber) {
-        this.phoneNumber = newPhoneNumber;
+    public void changeFoundYear(int newFoundYear) {
+        this.foundYear = newFoundYear;
     }
 
     public void changeCreatedOn(LocalDateTime newDateTime) {
@@ -141,20 +154,20 @@ public class Publisher {
         return this.email;
     }
 
-    public String takeBio() {
-        return this.bio;
+    public String takePhoneNumber() {
+        return this.phoneNumber;
     }
 
-    public int takeFoundYear() {
-        return this.foundYear;
+    public String takeBio() {
+        return this.bio;
     }
 
     public String takeAddress() {
         return this.address;
     }
 
-    public String takePhoneNumber() {
-        return this.phoneNumber;
+    public int takeFoundYear() {
+        return this.foundYear;
     }
 
     public LocalDateTime takeCreatedOn() {
@@ -163,22 +176,6 @@ public class Publisher {
 
     @Override
     public String toString() {
-        return String.format("Publisher{id=%s, name=%s, email=%s, bio=%s, foundYear=%d, address=%s, phoneNumber=%s, createdOn=%s}", id, name, email, bio, foundYear, address, phoneNumber, createdOn);
-    }
-
-    private static final String getVerifiedEmail(String email) {
-        if (!email.contains("@") && !email.contains(".com")) {
-            throw new IllegalArgumentException(String.format("'%s' not a verified email.", email));
-        } else {
-            return email;
-        }
-    }
-
-    private static final String getVerifiedPhoneNumber(String phoneNumber) {
-        if (!phoneNumber.contains("+") && !phoneNumber.contains("-")) {
-            throw new IllegalArgumentException(String.format("'%s' not a verified phone number", phoneNumber));
-        } else {
-            return phoneNumber;
-        }
+        return String.format("Publisher{id=%s, name=%s, email=%s, phoneNumber=%s, bio=%s, address=%s, foundYear=%d, createdOn=%s}", id, name, email, phoneNumber, bio, address, foundYear, createdOn);
     }
 }

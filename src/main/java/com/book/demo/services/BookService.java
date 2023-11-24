@@ -63,6 +63,7 @@ public class BookService {
             bookRequestDTO.publisherId(),
             bookRequestDTO.publishYear(),
             bookRequestDTO.totalPage(),
+            bookRequestDTO.price(),
             bookRequestDTO.category()
         );
         return bookRepository.save(storedData);
@@ -84,6 +85,7 @@ public class BookService {
         update.set("publisherId", bookUpdateRequestDTO.publisherId());
         update.set("publishYear", bookUpdateRequestDTO.publishYear());
         update.set("totalPage", bookUpdateRequestDTO.totalPage());
+        update.set("price", bookUpdateRequestDTO.price());
         update.set("category", bookUpdateRequestDTO.category());
         update.set("createdOn", LocalDateTime.now());
 
@@ -98,6 +100,7 @@ public class BookService {
         update.set("synopsis", bookPatchUpdateDTO.synopsis());
         update.set("publishYear", bookPatchUpdateDTO.publishYear());
         update.set("totalPage", bookPatchUpdateDTO.totalPage());
+        update.set("price", bookPatchUpdateDTO.price());
         update.set("category", bookPatchUpdateDTO.category());
         update.set("createdOn", LocalDateTime.now());
 

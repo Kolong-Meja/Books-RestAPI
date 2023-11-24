@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.book.demo.utils.VerifiedDataUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.Nullable;
 
@@ -36,13 +37,24 @@ public class Author {
 
     @Indexed(unique = true)
     @JsonProperty("email")
-    @Schema(type = "string", format = "email", description = "Email of the author.", nullable = false)
+    @Schema(
+        type = "string", 
+        format = "email", 
+        description = "Email of the author.",
+        pattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", 
+        nullable = false)
     @Field("email")
     private String email;
 
     @Indexed(unique = true)
     @JsonProperty("phoneNumber")
-    @Schema(type = "string", example = "+021-7665-8765", description = "Phone Number of the author.", nullable = false)
+    @Schema(
+        type = "string", 
+        example = "+919367788755", 
+        description = "Phone Number of the author.", 
+        pattern = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$",
+        nullable = false
+    )
     @Field("phoneNumber")
     private String phoneNumber;
     
@@ -63,8 +75,8 @@ public class Author {
         this.id = UUID.randomUUID().toString();
         this.fullname = Objects.requireNonNull(fullname);
         this.biography = Objects.requireNonNull(biography);
-        this.email = Objects.requireNonNull(getVerifiedEmail(email));
-        this.phoneNumber = Objects.requireNonNull(getVerifiedPhoneNumber(phoneNumber));
+        this.email = Objects.requireNonNull(VerifiedDataUtil.getVerifiedEmail(email));
+        this.phoneNumber = Objects.requireNonNull(VerifiedDataUtil.getVerifiedPhoneNumber(phoneNumber));
         this.createdOn = LocalDateTime.now();
     }
 
@@ -136,21 +148,5 @@ public class Author {
             phoneNumber,
             createdOn
             );
-    }
-
-    private static final String getVerifiedEmail(String email) {
-        if (!email.contains("@") && !email.contains(".com")) {
-            throw new IllegalArgumentException(String.format("'%s' not a verified email.", email));
-        } else {
-            return email;
-        }
-    }
-
-    private static final String getVerifiedPhoneNumber(String phoneNumber) {
-        if (!phoneNumber.contains("+") && !phoneNumber.contains("-")) {
-            throw new IllegalArgumentException(String.format("'%s' not a verified phone number", phoneNumber));
-        } else {
-            return phoneNumber;
-        }
     }
 }

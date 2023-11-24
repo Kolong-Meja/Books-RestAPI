@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import com.book.demo.dto.client.ClientDTO;
 import com.book.demo.dto.client.ClientLoginDTO;
 import com.book.demo.dto.client.ClientPatchPasswordDTO;
+import com.book.demo.enums.Role;
 import com.book.demo.models.Client;
-import com.book.demo.models.Role;
 import com.book.demo.repositories.ClientRepository;
 
 @Service
