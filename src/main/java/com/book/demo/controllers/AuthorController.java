@@ -131,7 +131,7 @@ public class AuthorController {
         @ApiResponse(responseCode = "403", description = "Forbidden Error.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ForbiddenError.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerError.class)))
     })
-    @PostMapping(value = "/", consumes = { "text/plain", "application/json" })
+    @PostMapping(value = "/", consumes = { "application/json" })
     public ResponseEntity<Object> newAuthor(@RequestBody AuthorRequestDTO authorRequestDTO) {
         Author data = authorService.addNewAuthor(authorRequestDTO);
         return ResponseHandler.generateResponse(HttpStatus.CREATED, true,  "Successfully created a new data!", data);

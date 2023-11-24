@@ -13,9 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.book.demo.dto.client.ClientDTO;
 import com.book.demo.dto.client.ClientLoginDTO;
 import com.book.demo.dto.client.ClientPatchPasswordDTO;
+import com.book.demo.dto.client.ClientRequestDTO;
 import com.book.demo.enums.Role;
 import com.book.demo.models.Client;
 import com.book.demo.repositories.ClientRepository;
@@ -37,11 +37,11 @@ public class AuthenticationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String signUp(ClientDTO clientDTO) {
+    public String signUp(ClientRequestDTO clientRequestDTO) {
         Client client = Client.getInstance( 
-            clientDTO.fullname(), 
-            clientDTO.email(), 
-            passwordEncoder.encode(clientDTO.password()), 
+            clientRequestDTO.fullname(), 
+            clientRequestDTO.email(), 
+            passwordEncoder.encode(clientRequestDTO.password()), 
             Role.USER
         );
         clientRepository.save(client);
