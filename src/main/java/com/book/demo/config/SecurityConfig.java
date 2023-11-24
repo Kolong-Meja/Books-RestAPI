@@ -25,7 +25,7 @@ public class SecurityConfig {
         "/api/v1/auth/**", 
         "/api-docs/**", 
         "/swagger-ui/**",
-        "/api/v1/clients/{email}/forget-password" 
+        "api/v1/caches/clear-cache" 
     };
 
     @Autowired
