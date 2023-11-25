@@ -48,7 +48,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class BookController {
     @Autowired
     private BookService bookService;
-
+    
     @Operation(summary = "Get all books data", description = "Get all books data like title, author name, publisher name, etc.", tags = "Books")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Get Operation successfull.", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GetResponse.class)))}),

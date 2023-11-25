@@ -103,6 +103,32 @@ public class Book {
         this.createdOn = LocalDateTime.now();
     }
 
+    private Book(
+        String id,
+        long isbn,
+        String title,
+        String synopsis,
+        String authorId,
+        String publisherId, 
+        int publishYear, 
+        int totalPage,
+        double price, 
+        String category,
+        LocalDateTime createdOn
+    ) {
+        this.id = Objects.requireNonNull(id);
+        this.isbn = Objects.requireNonNull(isbn);
+        this.title = Objects.requireNonNull(title);
+        this.synopsis = Objects.requireNonNull(synopsis);
+        this.authorId = Objects.requireNonNull(authorId);
+        this.publisherId = Objects.requireNonNull(publisherId);
+        this.publishYear = Objects.requireNonNull(publishYear);
+        this.totalPage = Objects.requireNonNull(totalPage);
+        this.category = Objects.requireNonNull(category);
+        this.price = Objects.requireNonNull(price);
+        this.createdOn = Objects.requireNonNull(createdOn);
+    }
+
     public static Book getInstance(
         long isbn,
         String title,
@@ -124,6 +150,34 @@ public class Book {
             totalPage, 
             price,
             category
+        );
+    }
+
+    public static Book getInstance(
+        String id,
+        long isbn,
+        String title,
+        String synopsis,
+        String authorId,
+        String publisherId, 
+        int publishYear, 
+        int totalPage,
+        double price, 
+        String category,
+        LocalDateTime createdOn
+    ) {
+        return new Book(
+            id,
+            isbn, 
+            title, 
+            synopsis, 
+            authorId, 
+            publisherId, 
+            publishYear, 
+            totalPage, 
+            price,
+            category,
+            createdOn
         );
     }
 

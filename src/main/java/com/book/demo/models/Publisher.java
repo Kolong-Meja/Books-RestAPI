@@ -92,6 +92,26 @@ public class Publisher {
         this.createdOn = LocalDateTime.now();
     }
 
+    private Publisher(
+        String id,
+        String name, 
+        String email, 
+        String phoneNumber,
+        String bio, 
+        String address, 
+        int foundYear,
+        LocalDateTime createdOn
+    ) {
+        this.id = Objects.requireNonNull(id);
+        this.name = Objects.requireNonNull(name);
+        this.email = Objects.requireNonNull(VerifiedDataUtil.getVerifiedEmail(email));
+        this.phoneNumber = Objects.requireNonNull(VerifiedDataUtil.getVerifiedPhoneNumber(phoneNumber));
+        this.bio = Objects.requireNonNull(bio);
+        this.foundYear = Objects.requireNonNull(foundYear);
+        this.address = Objects.requireNonNull(address);
+        this.createdOn = Objects.requireNonNull(createdOn);
+    }
+
     public static Publisher getInstance(
         String name, 
         String email, 
@@ -109,6 +129,28 @@ public class Publisher {
             foundYear 
         );
     }
+
+    public static Publisher getInstance(
+        String id,
+        String name, 
+        String email, 
+        String phoneNumber,
+        String bio, 
+        String address, 
+        int foundYear,
+        LocalDateTime createdOn
+    ) {
+        return new Publisher(
+            id, 
+            name, 
+            email, 
+            phoneNumber, 
+            bio, 
+            address, 
+            foundYear, 
+            createdOn
+        );
+    }   
 
     public void changeCurrentId(String newId) {
         this.id = newId;

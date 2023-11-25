@@ -36,6 +36,10 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
     @Operation(summary = "Create new account", description = "Create new account, and get a response from it.", tags = "Authentications")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Create operation succesfull.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequestResponse.class))),

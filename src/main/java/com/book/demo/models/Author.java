@@ -80,6 +80,22 @@ public class Author {
         this.createdOn = LocalDateTime.now();
     }
 
+    private Author(
+        String id,
+        String fullname, 
+        String biography, 
+        String email, 
+        String phoneNumber,
+        LocalDateTime createdOn
+    ) {
+        this.id = Objects.requireNonNull(id);
+        this.fullname = Objects.requireNonNull(fullname);
+        this.biography = Objects.requireNonNull(biography);
+        this.email = Objects.requireNonNull(VerifiedDataUtil.getVerifiedEmail(email));
+        this.phoneNumber = Objects.requireNonNull(VerifiedDataUtil.getVerifiedPhoneNumber(phoneNumber));
+        this.createdOn = Objects.requireNonNull(createdOn);
+    }
+
     public static Author getInstance(
         String fullname, 
         String biography, 
@@ -87,6 +103,17 @@ public class Author {
         String phoneNumber
     ) {
         return new Author(fullname, biography, email, phoneNumber);
+    }
+
+    public static Author getInstance(
+        String id,
+        String fullname, 
+        String biography, 
+        String email, 
+        String phoneNumber,
+        LocalDateTime createdOn
+    ) {
+        return new Author(id, fullname, biography, email, phoneNumber, createdOn);
     }
 
     public void changeId(String newValue) {

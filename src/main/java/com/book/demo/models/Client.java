@@ -88,6 +88,22 @@ public class Client implements UserDetails {
         this.createdOn = LocalDateTime.now();
     }
 
+    private Client(
+        String id,
+        String fullname, 
+        String email, 
+        String password,
+        Role role,
+        LocalDateTime createdOn
+    ) {
+        this.id = Objects.requireNonNull(id);
+        this.fullname = Objects.requireNonNull(fullname);
+        this.email = Objects.requireNonNull(VerifiedDataUtil.getVerifiedEmail(email));
+        this.password = Objects.requireNonNull(VerifiedDataUtil.getVerifiedPassword(password));
+        this.role = Objects.requireNonNull(role);
+        this.createdOn = Objects.requireNonNull(createdOn);
+    }
+
     public static Client getInstance(
         String fullname, 
         String email, 
@@ -95,6 +111,17 @@ public class Client implements UserDetails {
         Role role
     ) {
         return new Client(fullname, email, password, role);
+    }
+
+    public static Client getInstance(
+        String id,
+        String fullname, 
+        String email, 
+        String password,
+        Role role,
+        LocalDateTime createdOn
+    ) {
+        return new Client(id, fullname, email, password, role, createdOn);
     }
 
     public void changeCurrentId(String newValue) {
