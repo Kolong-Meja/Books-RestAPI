@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,16 +23,25 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import com.book.demo.dto.author.AuthorBooksDTO;
 import com.book.demo.models.Author;
+import com.book.demo.models.Book;
+import com.book.demo.models.Publisher;
 import com.book.demo.repositories.AuthorRepository;
+import com.book.demo.repositories.BookRepository;
+import com.book.demo.repositories.PublisherRepository;
 
 public class AuthorServiceTest {
     private AuthorRepository authorRepository;
+    private PublisherRepository publisherRepository;
+    private BookRepository bookRepository;
     private MongoTemplate mongoTemplate;
 
     @BeforeEach
     void setUpService() {
         authorRepository = mock(AuthorRepository.class);
+        publisherRepository = mock(PublisherRepository.class);
+        bookRepository = mock(BookRepository.class);
         mongoTemplate = mock(MongoTemplate.class);
     }
 
@@ -81,13 +91,17 @@ public class AuthorServiceTest {
         );
         when(authorRepository.save(any(Author.class))).thenReturn(author);
 
-        Author savedData = authorRepository.save(author);
+        authorRepository.save(author);
 
-        when(mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class))).thenReturn(savedData);
+        verify(authorRepository).save(author);
 
-        Author data = mongoTemplate.findById(savedData.takeCurrentId(), Author.class);
+        when(mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class))).thenReturn(author);
+
+        Author data = mongoTemplate.findById(author.takeCurrentId(), Author.class);
         
-        assertNotNull(data, "ID should be not null, id: %s");
+        verify(mongoTemplate).findById(anyString(), eq(Author.class));
+        
+        assertNotNull(data, "Data cannot be null.");
         assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", data.takeCurrentId(), "ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'");
     }
 
@@ -142,11 +156,11 @@ public class AuthorServiceTest {
         );
         when(authorRepository.save(any(Author.class))).thenReturn(author);
 
-        Author savedData = authorRepository.save(author);
+        authorRepository.save(author);
 
         verify(authorRepository).save(author);
 
-        when(mongoTemplate.findOne(any(Query.class), eq(Author.class))).thenReturn(savedData);
+        when(mongoTemplate.findOne(any(Query.class), eq(Author.class))).thenReturn(author);
 
         Author authorEmail = mongoTemplate.findOne(new Query(Criteria.where("email").is(author.takeEmail())), Author.class);
 
@@ -154,6 +168,92 @@ public class AuthorServiceTest {
         
         assertNotNull(authorEmail, "Email should be not null, email: %s");
         assertEquals("johndoe@example.com", authorEmail.takeEmail(), "Email must be 'johndoe@example.com'");
+    }
+
+    @Test
+    void findAuthorBooks() {
+        Author author = Author.getInstance(
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13",
+            "John Doe", 
+            "This is just a test.", 
+            "johndoe@example.com", 
+            "+0217768765",
+            LocalDateTime.now()
+        );
+
+        when(authorRepository.save(any(Author.class))).thenReturn(author);
+
+        authorRepository.save(author);
+
+        verify(authorRepository).save(author);
+
+        Publisher publisher = Publisher.getInstance(
+            "3865616a-e0ab-497e-85be-4d64b36bc891", 
+            "First Publisher", 
+            "firstpublisher@example.com", 
+            "+0218978786", 
+            "This is just an example.", 
+            "Road Victory Block A, floor 7th", 
+            2011, 
+            LocalDateTime.now()
+        );
+
+        when(publisherRepository.save(any(Publisher.class))).thenReturn(publisher);
+
+        publisherRepository.save(publisher);
+
+        verify(publisherRepository).save(publisher);
+
+        Book book = Book.getInstance(
+            "0f7a94c6-3dd1-438f-84b3-54b032d3f151", 
+            1506603733, 
+            "Example Book", 
+            "This is just an example.", 
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13", 
+            "3865616a-e0ab-497e-85be-4d64b36bc891", 
+            2012, 
+            532, 
+            12.99, 
+            "Adventure, Horror", 
+            LocalDateTime.now()
+        );
+
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
+
+        bookRepository.save(book);
+
+        verify(bookRepository).save(book);
+
+        when(mongoTemplate.findOne(any(Query.class), eq(Author.class))).thenReturn(author);
+
+        Author anotherAuthor = mongoTemplate.findOne(new Query(Criteria.where("id").is(book.takeAuthor())), Author.class);
+
+        verify(mongoTemplate).findOne(any(Query.class), eq(Author.class));
+
+        assertNotNull(anotherAuthor, "Data cannot be null.");
+        assertEquals(book.takeAuthor(), anotherAuthor.takeCurrentId(), "Author ID should be same, 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'");
+
+        List<Book> books = new ArrayList<>();
+        books.add(book);
+        
+        when(mongoTemplate.find(any(Query.class), eq(Book.class))).thenReturn(books);
+
+        List<Book> datas = mongoTemplate.find(new Query(Criteria.where("authorId").is(anotherAuthor.takeCurrentId())), Book.class);
+
+        verify(mongoTemplate).find(any(Query.class), eq(Book.class));
+
+        AuthorBooksDTO authorBooksDTO = new AuthorBooksDTO(
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13",
+            "John Doe", 
+            "This is just a test.", 
+            "johndoe@example.com", 
+            "+0217768765", 
+            datas, 
+            LocalDateTime.now()
+        );
+
+        assertNotNull(authorBooksDTO, "Data cannot be null.");
+        assertEquals(books, authorBooksDTO.books(), "Data should be same.");
     }
 
     @Test
@@ -168,16 +268,17 @@ public class AuthorServiceTest {
         );
         when(authorRepository.save(any(Author.class))).thenReturn(author);
 
-        Author saveData = authorRepository.save(author);
+        authorRepository.save(author);
 
         verify(authorRepository).save(author);
 
+        assertNotNull(author, "Data cannot be null.");
         assertAll("Group of author test", 
-            () -> assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", saveData.takeCurrentId(), "ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'"),
-            () -> assertEquals("John Doe", saveData.takeFullName(), "Fullname must be 'John Doe'"),
-            () -> assertEquals("This is just a test.", saveData.takeBiography(), "Biography must be 'This is just a test.'"),
-            () -> assertEquals("johndoe@example.com", saveData.takeEmail(), "Email must be 'johndoe@example.com'"),
-            () -> assertEquals("+0217768765", saveData.takePhoneNumber(), "Phone number must be '+0217768765'")
+            () -> assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", author.takeCurrentId(), "ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'"),
+            () -> assertEquals("John Doe", author.takeFullName(), "Fullname must be 'John Doe'"),
+            () -> assertEquals("This is just a test.", author.takeBiography(), "Biography must be 'This is just a test.'"),
+            () -> assertEquals("johndoe@example.com", author.takeEmail(), "Email must be 'johndoe@example.com'"),
+            () -> assertEquals("+0217768765", author.takePhoneNumber(), "Phone number must be '+0217768765'")
         );
     }
 
@@ -193,11 +294,15 @@ public class AuthorServiceTest {
         );
         when(authorRepository.save(any(Author.class))).thenReturn(author);
 
+        authorRepository.save(author);
+        
         when(mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class))).thenReturn(author);
 
         Author data = mongoTemplate.findById(author.takeCurrentId(), Author.class); 
 
-        assertNotNull(data, "ID should be not null, id: %s");
+        verify(mongoTemplate).findById(anyString(), eq(Author.class));
+
+        assertNotNull(data, "Data cannot be null.");
         assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", data.takeCurrentId(), "ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'");
 
         data.changeFullName("John Smith");
@@ -208,16 +313,15 @@ public class AuthorServiceTest {
 
         when(authorRepository.save(any(Author.class))).thenReturn(data);
 
-        Author savedUpdateData = authorRepository.save(data);
-
-        verify(authorRepository).save(data);
+        authorRepository.save(data);
         
+        assertNotNull(data, "Data cannot be null.");
         assertAll("Group of update author test", 
-            () -> assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", savedUpdateData.takeCurrentId(), "ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'"),
-            () -> assertEquals("John Smith", savedUpdateData.takeFullName(), "Fullname must be 'John Smith'"),
-            () -> assertEquals("This is just an example test.", savedUpdateData.takeBiography(), "Biography must be 'This is just an example test.'"),
-            () -> assertEquals("johnsmith78@gmail.com", savedUpdateData.takeEmail(), "Email must be 'johnsmith78@gmail.com'"),
-            () -> assertEquals("+0218976785", savedUpdateData.takePhoneNumber(), "Phone number must be '+0218976785'")
+            () -> assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", data.takeCurrentId(), "ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'"),
+            () -> assertEquals("John Smith", data.takeFullName(), "Fullname must be 'John Smith'"),
+            () -> assertEquals("This is just an example test.", data.takeBiography(), "Biography must be 'This is just an example test.'"),
+            () -> assertEquals("johnsmith78@gmail.com", data.takeEmail(), "Email must be 'johnsmith78@gmail.com'"),
+            () -> assertEquals("+0218976785", data.takePhoneNumber(), "Phone number must be '+0218976785'")
         );
     }
 
@@ -236,6 +340,8 @@ public class AuthorServiceTest {
 
         authorRepository.save(author);
 
+        verify(authorRepository).save(author);
+
         when(mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class))).thenReturn(author);
         
         authorRepository.deleteById(author.takeCurrentId());
@@ -244,7 +350,7 @@ public class AuthorServiceTest {
 
         Author deleteData = mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class));
 
-        assertNull(deleteData, "Author must be null now.");
+        assertNull(deleteData, "Author data must be null now.");
     }
 
     @Test

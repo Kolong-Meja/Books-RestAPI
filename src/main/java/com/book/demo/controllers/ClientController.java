@@ -103,7 +103,7 @@ public class ClientController {
     })
     @PatchMapping(value = "/{id}/password", consumes = { "application/json" })
     public ResponseEntity<Object> updateClientPassword(@PathVariable String id, @RequestBody ClientPatchPasswordDTO clientPatchPasswordDTO) {
-        clientService.renewClient(id, clientPatchPasswordDTO);
+        clientService.changeNewPassword(id, clientPatchPasswordDTO);
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully updated data!");
     }
 

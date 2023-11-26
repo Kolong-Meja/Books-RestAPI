@@ -60,7 +60,7 @@ public class ClientService implements UserDetailsService {
         mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update, Client.class);
     }
 
-    public void renewClient(String id, ClientPatchPasswordDTO clientPatchPasswordDTO) {
+    public void changeNewPassword(String id, ClientPatchPasswordDTO clientPatchPasswordDTO) {
         Client client = mongoTemplate.findById(id, Client.class);
 
         if (client == null) throw new NullPointerException(String.format("Client with ID %s not found.", id));
