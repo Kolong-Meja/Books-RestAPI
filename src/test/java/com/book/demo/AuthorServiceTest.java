@@ -108,7 +108,7 @@ public class AuthorServiceTest {
     @Test
     void findAuthorByName() {
         Author initialAuthorInput = Author.getInstance(
-             "a0a79444-d58b-4bbd-b3cd-d267ee4dca13",
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13",
             "John Doe", 
             "This is just a test.", 
             "johndoe@example.com", 
@@ -350,7 +350,7 @@ public class AuthorServiceTest {
 
         Author deleteData = mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class));
 
-        assertNull(deleteData, "Author data must be null now.");
+        assertNull(deleteData, "Author data should be null now.");
     }
 
     @Test
