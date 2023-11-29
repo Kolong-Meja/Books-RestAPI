@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.book.demo.dto.book.BookPatchAuthorIdDTO;
@@ -87,8 +88,8 @@ public class BookController {
         @ApiResponse(responseCode = "404", description = "Data does not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataNotFound.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerError.class)))
     })
-    @GetMapping(value = "/title/{title}", produces = { "application/json" })
-    public ResponseEntity<Object> getSeveralBooksByTitle(@PathVariable String title) {
+    @GetMapping(value = "/title", produces = { "application/json" })
+    public ResponseEntity<Object> getSeveralBooksByTitle(@RequestParam String title) {
         List<Book> data = bookService.findBookByTitle(title);
         if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
@@ -109,7 +110,7 @@ public class BookController {
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }
 
-    @Operation(summary = "Get all books by specific Category", description = "Get all books based on specific Category.", tags = "Books")
+    @Operation(summary = "Get all books by specific Publisher ID", description = "Get all books based on specific Publisher ID.", tags = "Books")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Get Operation successfull.", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GetResponse.class)))}),
         @ApiResponse(responseCode = "400", description = "Data request cannot be processing.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BadRequest.class))),
@@ -117,9 +118,9 @@ public class BookController {
         @ApiResponse(responseCode = "404", description = "Data does not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataNotFound.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerError.class)))
     })
-    @GetMapping(value = "/category/{regex}", produces = { "application/json" })
-    public ResponseEntity<Object> getSeveralBooksByCategory(@PathVariable String regex) {
-        List<Book> data = bookService.findBookByCategory(regex);
+    @GetMapping(value = "/author/{publisherId}", produces = { "application/json" })
+    public ResponseEntity<Object> getSeveralBooksByPublisherId(@PathVariable String publisherId) {
+        List<Book> data = bookService.findBookByAuthorId(publisherId);
         if (data.isEmpty()) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found", data);
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
     }

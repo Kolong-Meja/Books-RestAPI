@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.book.demo.dto.errors.BadRequest;
@@ -84,8 +85,8 @@ public class PublisherController {
         @ApiResponse(responseCode = "404", description = "Data does not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataNotFound.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerError.class)))
     })
-    @GetMapping(value = "/name/{name}", produces = { "application/json" })
-    public ResponseEntity<Object> getOnePublisherByName(@PathVariable String name) {
+    @GetMapping(value = "/name", produces = { "application/json" })
+    public ResponseEntity<Object> getOnePublisherByName(@RequestParam String name) {
         Publisher data = publisherService.findPublisherByName(name);
         if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
@@ -99,8 +100,8 @@ public class PublisherController {
         @ApiResponse(responseCode = "404", description = "Data does not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataNotFound.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerError.class)))
     })
-    @GetMapping(value = "/email/{email}", produces = { "application/json" })
-    public ResponseEntity<Object> getOnePublisherByEmail(@PathVariable String email) {
+    @GetMapping(value = "/email", produces = { "application/json" })
+    public ResponseEntity<Object> getOnePublisherByEmail(@RequestParam String email) {
         Publisher data = publisherService.findPublisherByEmail(email);
         if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);

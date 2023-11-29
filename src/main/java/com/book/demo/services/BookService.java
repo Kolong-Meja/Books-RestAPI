@@ -44,8 +44,8 @@ public class BookService {
         return mongoTemplate.find(new Query(Criteria.where("authorId").is(authorId)), Book.class);
     }
 
-    public List<Book> findBookByCategory(String regex) {
-        return mongoTemplate.find(new Query(Criteria.where("category").regex(regex)), Book.class);
+    public List<Book> findBookByPublisherId(String publisherId) {
+        return mongoTemplate.find(new Query(Criteria.where("publisherId").is(publisherId)), Book.class);
     }
 
     public Book addNewBook(BookRequestDTO bookRequestDTO) {

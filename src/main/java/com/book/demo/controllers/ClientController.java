@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.book.demo.dto.client.ClientPatchPasswordDTO;
@@ -64,8 +65,8 @@ public class ClientController {
         @ApiResponse(responseCode = "404", description = "Data does not found.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataNotFound.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = InternalServerError.class)))
     })
-    @GetMapping(value = "/email/{email}", produces = { "application/json" })
-    public ResponseEntity<Object> getOneClientByEmail(@PathVariable String email) {
+    @GetMapping(value = "/email", produces = { "application/json" })
+    public ResponseEntity<Object> getOneClientByEmail(@RequestParam String email) {
         Client data = clientService.findClientByEmail(email);
         if (data == null) return ResponseHandler.generateResponse(HttpStatus.NOT_FOUND, false, "Data does not found.");
         return ResponseHandler.generateResponse(HttpStatus.OK, true, "Successfully retrieved data!", data);
