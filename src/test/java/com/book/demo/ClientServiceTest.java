@@ -182,8 +182,6 @@ public class ClientServiceTest {
 
         verify(clientRepository).save(client);
 
-        when(mongoTemplate.findById(eq("c58b5343-a936-4a9a-986f-b4ccb0ca2996"), eq(Client.class))).thenReturn(client);
-
         clientRepository.deleteById(client.getCurrentId());
 
         verify(clientRepository).deleteById(client.getCurrentId());

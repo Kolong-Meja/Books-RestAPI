@@ -341,8 +341,6 @@ public class AuthorServiceTest {
         authorRepository.save(author);
 
         verify(authorRepository).save(author);
-
-        when(mongoTemplate.findById(eq("a0a79444-d58b-4bbd-b3cd-d267ee4dca13"), eq(Author.class))).thenReturn(author);
         
         authorRepository.deleteById(author.takeCurrentId());
 

@@ -3,6 +3,7 @@ package com.book.demo;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -258,11 +259,141 @@ public class BookServiceTest {
     }
 
     @Test
-    void updateOneBook() {}
+    void updateOneBook() {
+        Book book = Book.getInstance(
+            "0f7a94c6-3dd1-438f-84b3-54b032d3f151", 
+            1506603733, 
+            "Example Book", 
+            "This is just an example.", 
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13", 
+            "3865616a-e0ab-497e-85be-4d64b36bc891", 
+            2012, 
+            532, 
+            12.99, 
+            "Adventure, Horror", 
+            LocalDateTime.now()
+        );
+
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
+
+        bookRepository.save(book);
+        
+        when(mongoTemplate.findById(eq("0f7a94c6-3dd1-438f-84b3-54b032d3f151"), eq(Book.class))).thenReturn(book);
+
+        Book data = mongoTemplate.findById(book.takeCurrentId(), Book.class);
+
+        verify(mongoTemplate).findById(anyString(), eq(Book.class));
+
+        assertNotNull(data, "Data cannot be null.");
+        assertEquals("0f7a94c6-3dd1-438f-84b3-54b032d3f151", data.takeCurrentId(), "ID must be '0f7a94c6-3dd1-438f-84b3-54b032d3f151'");
+
+        data.changeISBN(1506603744);
+        data.changeTitle("Example of Book");
+        data.changeSynopsis("This is just another example.");
+        data.changeAuthor("a0a79444-d58b-4bbd-b3cd-d267ee4dca13");
+        data.changePublisher("3865616a-e0ab-497e-85be-4d64b36bc891");
+        data.changePublishYear(2013);
+        data.changeTotalPage(550);
+        data.changePrice(14.99);
+        data.changeCategory("Adventure, Drama");
+        data.changeCreatedOn(LocalDateTime.of(2023, 11, 26, 7, 32, 54));
+
+        when(bookRepository.save(any(Book.class))).thenReturn(data);
+
+        bookRepository.save(data);
+
+        assertNotNull(data, "Data cannot be null.");
+        assertAll("Group of update book test", 
+            () -> assertEquals("0f7a94c6-3dd1-438f-84b3-54b032d3f151", book.takeCurrentId(), "ID must be '0f7a94c6-3dd1-438f-84b3-54b032d3f151'"),
+            () -> assertEquals(1506603744, book.takeCurrentISBN(), "ISBN must be '1506603733'"),
+            () -> assertEquals("Example of Book", book.takeBookTitle(), "Title must be 'Example Book'"),
+            () -> assertEquals("This is just another example.", book.takeBookSynopsis(), "Synopsis must be 'This is just an example.'"),
+            () -> assertEquals("a0a79444-d58b-4bbd-b3cd-d267ee4dca13", book.takeAuthor(), "Author ID must be 'a0a79444-d58b-4bbd-b3cd-d267ee4dca13'"),
+            () -> assertEquals("3865616a-e0ab-497e-85be-4d64b36bc891", book.takePublisher(), "Publisher ID must be '3865616a-e0ab-497e-85be-4d64b36bc891'"),
+            () -> assertEquals(2013, book.takeBookPublishYear(), "Publish year must be '2012'"),
+            () -> assertEquals(550, book.takeBookTotalPage(), "Total page must be '532'"),
+            () -> assertEquals(14.99, book.takeBookPrice(), "Price must be '12.99'"),
+            () -> assertEquals("Adventure, Drama", book.takeBookCategory(), "Category must be 'Adventure, Horror'")
+        ); 
+    }
 
     @Test
-    void removeAllBooks() {}
+    void removeAllBooks() {
+        Book initialBookInput = Book.getInstance(
+            "0f7a94c6-3dd1-438f-84b3-54b032d3f151", 
+            1506603733, 
+            "Example Book", 
+            "This is just an example.", 
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13", 
+            "3865616a-e0ab-497e-85be-4d64b36bc891", 
+            2012, 
+            532, 
+            12.99, 
+            "Adventure, Horror", 
+            LocalDateTime.now()
+        );
+
+        Book continuationBookInput = Book.getInstance(
+            "9ac6fa59-8215-4100-856e-462412f0f5f0", 
+            1506603734, 
+            "Example Book Second", 
+            "This is just an example.", 
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13", 
+            "8ca5c797-16ac-4dcc-bb58-45e2b4bb3cf4", 
+            2013, 
+            556, 
+            14.99, 
+            "Adventure, Drama", 
+            LocalDateTime.now()
+        );
+
+        List<Book> books = new ArrayList<>();
+        books.add(initialBookInput);
+        books.add(continuationBookInput);
+
+        when(bookRepository.saveAll(anyList())).thenReturn(books);
+
+        bookRepository.saveAll(books);
+
+        verify(bookRepository).saveAll(books);
+
+        bookRepository.deleteAll();
+
+        verify(bookRepository).deleteAll();
+
+        List<Book> datas = bookRepository.findAll();
+
+        assertEquals(new ArrayList<>(), datas);
+    }
 
     @Test
-    void removeOneBook() {}
+    void removeOneBook() {
+        Book book = Book.getInstance(
+            "0f7a94c6-3dd1-438f-84b3-54b032d3f151", 
+            1506603733, 
+            "Example Book", 
+            "This is just an example.", 
+            "a0a79444-d58b-4bbd-b3cd-d267ee4dca13", 
+            "3865616a-e0ab-497e-85be-4d64b36bc891", 
+            2012, 
+            532, 
+            12.99, 
+            "Adventure, Horror", 
+            LocalDateTime.now()
+        );
+
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
+
+        bookRepository.save(book);
+
+        verify(bookRepository).save(book);
+
+        bookRepository.deleteById(book.takeCurrentId());
+
+        verify(bookRepository).deleteById(book.takeCurrentId());
+
+        Book data = mongoTemplate.findById(eq("0f7a94c6-3dd1-438f-84b3-54b032d3f151"), eq(Book.class));
+
+        assertNull(data, "Book data should be null now.");
+    }
 }

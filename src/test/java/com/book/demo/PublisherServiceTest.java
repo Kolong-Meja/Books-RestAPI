@@ -364,8 +364,6 @@ public class PublisherServiceTest {
 
         verify(publisherRepository).save(publisher);
 
-        when(mongoTemplate.findById(eq("3865616a-e0ab-497e-85be-4d64b36bc891"), eq(Publisher.class))).thenReturn(publisher);
-
         publisherRepository.deleteById(publisher.takeCurrentId());
 
         verify(publisherRepository).deleteById(publisher.takeCurrentId());
